@@ -77,13 +77,19 @@ function getMatchedRotations(rotationTable, time) {
     return matchedRotations;
 }
 
+/**
+ * dynamically generates a table out of a object
+ * @param object
+ * @param where
+ * @param header
+ */
 function buildTableFromObject(object, where, header) {
     var table = "<table>";
     table += "<tr>";
     $.each(header, function (idx, item) {
-            table += "<th>";
-            table += item;
-            table += "</th>";
+        table += "<th>";
+        table += item;
+        table += "</th>";
     });
     table += "</tr>";
     $.each(object, function (key, value) {
@@ -99,4 +105,18 @@ function buildTableFromObject(object, where, header) {
     table += "</tr>";
     table += "</table>";
     $(where).html(table);
+}
+
+/**
+ * adds col value of all rows in json array
+ * @param jsonArray
+ * @param colName
+ * @returns {number}
+ */
+function addCols(jsonArray, colName) {
+    let sum = 0;
+    $.each(jsonArray, function (ind, value) {
+        sum += Number(value[colName]);
+    });
+    return sum;
 }

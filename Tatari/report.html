@@ -41,10 +41,10 @@
             console.log(totalSpots);
             $("#totalSpots").html("<h3> Total Spots </h3>").append(totalSpots);
 
-            let totalSpend;
+            let totalSpend = addCols(spots,"Spend");
             $("#totalSpend").html("<h3> Total Spend </h3>").append(totalSpend);
 
-            let totalView;
+            let totalView = addCols(spots, "Views")
             $("#totalView").html("<h3> Total Views </h3>").append(totalView);
 
 
@@ -77,6 +77,7 @@
                     let key = spot["Date"] +" "+ rotationName;
                     if (!byDayRotationView[key]) {
                         byDayRotationView[key] = {};
+                        // byDayRotationView[key]["time"] = key;
                         byDayRotationView[key]["spent"] = Number(spot["Spend"]);
                         byDayRotationView[key]["view"] = Number(spot["Views"]);
                     } else {
@@ -98,3 +99,4 @@
 </script>
 </body>
 </html>
+
