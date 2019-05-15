@@ -1,0 +1,56 @@
+body{
+    font-family: Tahoma, Verdana, Segoe, sans-serif;
+}
+.content {
+    background-color: #f9fbfd;
+    width: 95%;
+    height: 800px;
+    margin: auto;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, .1);
+}
+table{
+    width:80%;
+    padding-left: 2%;
+    margin: 10px 0px 10px 0px;
+    margin: 0 auto;
+    background-color: white;
+    border-collapse: collapse;
+}
+tr{
+    border: solid #f9fbfd;
+    border-width: 3px 0;
+}
+td{
+    padding: 15px;
+    cellspacing: 4;
+}
+th{
+   color: gray;
+    font-size: 16px;
+    font-weight: lighter;
+    text-align: left;
+    padding-top: 3%;
+    padding-left: 10px;
+}
+#spotReport, #rotationReport{
+    padding-top: 2%;
+}
+#overalView{
+    margin: 0 auto;
+    text-align: center;
+    width: 80%;
+}
+.column {
+    float: left;
+    width: 30%;
+    padding: 10px;
+}
+.row{
+    margin-left: 5%;
+    padding-bottom: 3%;
+}
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}

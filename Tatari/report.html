@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+<div id="overalView">
+    <div class="row">
+        <div class="column" id="totalSpots"></div>
+        <div class="column" id="totalSpend"></div>
+        <div class="column" id="totalView"></div>
+    </div>
+</div>
+
+<div class="content">
+    <div id="spotReport"><h1>By Creative</h1></div>
+    <div id="rotationReport"><h1>By Day - Rotation</h1></div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript" src="js/util.js"></script>
+<script>
+    // assumption is made that spots.csv and rotations.csv will be accessed by a ajax call
+    // for the purpose of this homework I put them in asset folder and I get them using jquery get function
+    const spotsPath = "assets/spots.csv";
+    const rotationsPath = "assets/rotations.csv";
+    let rotationTable = {};
+
+    $.get(spotsPath, function (spotsTextFile) {
+        let spotsText = spotsTextFile;
+        $.get(rotationsPath, function (rotationTextFile) {
+            let rotationText = rotationTextFile;
+            let spots = csvToJsonArray(spotsText);
+            let rotations = csvToJsonArray(rotationText);
+            rotationTable = buildRotationMap(rotations);
+
+            // Overall view
+            let totalSpots = spots.length;
+            console.log(totalSpots);
+            $("#totalSpots").html("<h3> Total Spots </h3>").append(totalSpots);
+
+            let totalSpend;
+            $("#totalSpend").html("<h3> Total Spend </h3>").append(totalSpend);
+
+            let totalView;
+            $("#totalView").html("<h3> Total Views </h3>").append(totalView);
+
+
+            // Logic to generate by-creative view
+            let byCreativeView = {};
+
+            $.each(spots, function (ind, spot) {
+                var name = spot["Creative"];
+                if (!byCreativeView[name]) {
+                    byCreativeView[name] = {};
+                    byCreativeView[name]["spent"] = Number(spot["Spend"]);
+                    byCreativeView[name]["view"] = Number(spot["Views"]);
+                } else {
+                    byCreativeView[name]["spent"] += Number(spot["Spend"]);
+                    byCreativeView[name]["view"] += Number(spot["Views"]);
+                }
+                byCreativeView[name]["cpv"] = Number(byCreativeView[name]["spent"]/byCreativeView[name]["view"]).toFixed(2);
+                totalSpend += Number(byCreativeView[name]["spent"]);
+            });
+            console.log(totalSpend)
+
+            buildTableFromObject(byCreativeView, "#spotReport", ["Creative", "Spend", "Views", "CPV"]);
+
+
+            // Logic to generate day-rotation view
+            let byDayRotationView = {};
+
+            $.each(spots, function (ind, spot) {
+                $.each(getMatchedRotations(rotationTable, spot["Time"]), function (ind, rotationName) {
+                    let key = spot["Date"] +" "+ rotationName;
+                    if (!byDayRotationView[key]) {
+                        byDayRotationView[key] = {};
+                        byDayRotationView[key]["time"] = key;
+                        byDayRotationView[key]["spent"] = Number(spot["Spend"]);
+                        byDayRotationView[key]["view"] = Number(spot["Views"]);
+                    } else {
+                        byDayRotationView[key]["spent"] += Number(spot["Spend"]);
+                        byDayRotationView[key]["view"] += Number(spot["Views"]);
+                    }
+                    byDayRotationView[key]["CPV"] = Number(byDayRotationView[key]["spent"] / byDayRotationView[key]["view"]).toFixed(2);
+                });
+            });
+
+            buildTableFromObject(byDayRotationView, "#rotationReport", ["Day - Duration", "Spend", "Views", "CPV"]);
+        });
+
+
+
+    });
+
+
+</script>
+</body>
+</html>
