@@ -77,7 +77,6 @@
                     let key = spot["Date"] +" "+ rotationName;
                     if (!byDayRotationView[key]) {
                         byDayRotationView[key] = {};
-                        // byDayRotationView[key]["time"] = key;
                         byDayRotationView[key]["spent"] = Number(spot["Spend"]);
                         byDayRotationView[key]["view"] = Number(spot["Views"]);
                     } else {
